@@ -1,0 +1,27 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    hostname: portainer
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ:-UTC}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_volume:/data
+    ports:
+      - "8000:8000"
+      - "9443:9443/tcp"
+      - "9443:9443/udp"
+    restart: unless-stopped
+    networks:
+      - portainer_network
+
+volumes:
+  portainer_volume:
+
+networks:
+  portainer_network:
+    name: portainer_network
+    driver: bridge
